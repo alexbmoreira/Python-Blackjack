@@ -24,7 +24,7 @@ class Hand():
     def __len__(self):
         return len(self.cards)
         
-    def add_card(self, *args):
+    def hit(self, *args):
         for card in args:
             self.cards.append(card)
             self.value += card.value
@@ -70,7 +70,7 @@ if __name__ == "__main__":
     hand_a = Hand()
     card_a = Card("Hearts", "King", 10)
 
-    hand_a.add_card(card_a, Card("Hearts", "Jack", 10), Card("Clubs", "Ace", 11))
+    hand_a.hit(card_a, Card("Hearts", "Jack", 10), Card("Clubs", "Ace", 11))
     print(f"{hand_a} - {hand_a.value}")
     print(hand_a.check_bust())
 
@@ -81,7 +81,7 @@ if __name__ == "__main__":
     card_b2 = Card("Clubs", "King", 10)
     card_b3 = Card("Diamonds", "Six", 6)
 
-    hand_b.add_card(card_b1, card_b2, card_b3)
+    hand_b.hit(card_b1, card_b2, card_b3)
     print(f"{hand_b} - {hand_b.value}")
     print(hand_b.check_bust())
 
