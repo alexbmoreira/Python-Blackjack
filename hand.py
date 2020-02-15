@@ -30,26 +30,33 @@ class Hand():
             self.value += card.value
 
             if(card.rank == "Ace"):
+                if self.value > 21:
+                    self.value -= 10
+                    card.value = 1
+
                 self.aces += 1
 
     def check_bust(self):
         if self.value > 21:
-            if self.aces == 0:
-                return True
-
-            for i in range(0, self.aces):
-                self.value -= 10
-
-                if self.value <= 21:
-                    return False
-            
+#            if self.aces == 0:
+#                return True
+#
+#            for i in range(0, self.aces):
+#                self.value -= 10
+#
+#                if self.value <= 21:
+#                    return False
+#            
             return True
         
         return False
 
     def check_winner(self, dealer):
-        print(f" - {21 - self.value}")
-        print(f" - {21 - dealer.value}")
+        if dealer.value > 21:
+            return True
+        if self.value > 21:
+            return False
+        
         if 21 - self.value < 21 - dealer.value:
             return True
         
