@@ -38,15 +38,6 @@ class Hand():
 
     def check_bust(self):
         if self.value > 21:
-#            if self.aces == 0:
-#                return True
-#
-#            for i in range(0, self.aces):
-#                self.value -= 10
-#
-#                if self.value <= 21:
-#                    return False
-#            
             return True
         
         return False
