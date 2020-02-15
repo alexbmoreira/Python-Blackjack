@@ -45,16 +45,14 @@ class Hand():
         
         return False
 
-    def check_winner(self, dealer):
-        if dealer.value > 21:
+    def is_winner(self, dealer):
+        if dealer.check_bust():
             return True
-        if self.value > 21:
+        if self.check_bust():
             return False
         
-        if 21 - self.value < 21 - dealer.value:
-            return True
-        
-        return False
+        if 21 - dealer.value < 21 - self.value:
+            return False
 
 if __name__ == "__main__":
     import random
@@ -79,4 +77,4 @@ if __name__ == "__main__":
     print(f"{hand_b} - {hand_b.value}")
     print(hand_b.check_bust())
 
-    print(hand_a.check_winner(hand_b))         # Should be True
+    print(hand_a.is_winner(hand_b))         # Should be True

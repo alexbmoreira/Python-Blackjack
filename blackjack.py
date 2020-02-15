@@ -22,6 +22,16 @@ def initialize():
 
     return deck, player, dealer
 
+def print_hands(player, dealer):
+    print("Your cards:")
+    print(f"{player}Value: {player.value}\n")
+
+    print("Dealer cards")
+    if dealer.cards[1].face_down:
+        print(f"{dealer}Value: {dealer.value - dealer.cards[1].value}\n")
+    else:
+        print(f"{dealer}Value: {dealer.value}\n")
+
 def play(setup):
     deck = setup[0]
     player = setup[1]
@@ -34,34 +44,34 @@ def play(setup):
     player.hit(deck.deal(), deck.deal())
 
     while True:
-        print("Your cards:")
-        print(player)
-
-        print("Dealer cards")
-        print(dealer)
+        print_hands(player, dealer)
 
         while True:
             move = input("Hit or stay (q to exit): ").lower()
 
             if move == "hit" or move == "stay" or move == "q":
-                break;
+                break
             else:
                 print("Not a valid choice")
 
 
-        if move.lower() == "q":
+        if move == "q":
             return "quit"
 
-        if move.lower() == "hit":
-            player.hit(deck.deal())
+        if move == "hit":
+            card = deck.deal()
+            player.hit(card)
             if not player.check_bust():
-                print("                     -hi")
                 continue
             else:
+                print(f"Hit: {card}")
                 print("Bust! You lost!")
-                return "game";
-        
-        break;
+                print_hands(player, dealer)
+                return "game"
+        elif move == "stay":
+            dealer.cards[1].face_down = False
+            
+            return "game"
 
 
 
