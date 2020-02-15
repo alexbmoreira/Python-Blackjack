@@ -1,3 +1,5 @@
+import random
+
 class Deck():
 
     def __init__(self, cards):
@@ -13,7 +15,7 @@ class Deck():
         for card in self.cards:
             string += str(card) + "\n"
 
-        return string + str(self.cards[length])
+        return string
 
     def __len__(self):
         return len(self.cards)
@@ -22,9 +24,8 @@ class Deck():
         random.shuffle(self.cards)
 
     def deal(self):
-        
-        card_index = random.randint(0, len(cards) - 1)
-        card = cards.pop(card_index)
+        card_index = random.randint(0, len(self.cards) - 1)
+        card = self.cards.pop(card_index)
 
         return card
 

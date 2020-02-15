@@ -16,10 +16,13 @@ class Hand():
         if length < 0:
             return string
 
-        for i in range(0, length):
-            string += str(self.cards[i]) + "\n"
+        for card in self.cards:
+            if not card.face_down:
+                string += str(card) + "\n"
+            else:
+                string += "*Face down*" + "\n"
 
-        return string + str(self.cards[length])
+        return string
 
     def __len__(self):
         return len(self.cards)
