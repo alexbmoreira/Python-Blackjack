@@ -18,11 +18,21 @@ def print_hands(player, dealer):
 
 def get_input():
     while True:
-        move = input("Hit or stay (q to exit): ").lower()
+        move = input("'hit' or 'stay'? (q to exit): ").lower()
 
         if move == "hit" or move == "stay" or move == "q":
             print()
             return move
+        
+        print("Not a valid choice")
+
+def play_again():
+    while True:
+        choice = input("Play again? ('yes' or 'no'): ").lower()
+
+        if choice == "yes" or choice == "no":
+            print()
+            return choice
         
         print("Not a valid choice")
 
@@ -88,54 +98,17 @@ def play(setup):
     dealer.hit(deck.deal(), temp_card)
     player.hit(deck.deal(), deck.deal())
 
-    if make_move(deck, player, dealer) != "quit":
+    outcome = make_move(deck, player, dealer)
+
+    if outcome != "quit":
         print_hands(player, dealer)
-    
+        return play_again()
+
+    return outcome
 
 
 
+while play(initialize()) == "yes":
+    pass
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-"""
-    while True:
-        print_hands(player, dealer)
-
-        move = get_input()
-
-        if move == "q":
-            return "quit"
-
-        if move == "hit":
-            card = deck.deal()
-            player.hit(card)
-            if not player.check_bust():
-                continue
-            else:
-                print(f"Hit: {card}")
-                print("Bust! You lost!")
-                print_hands(player, dealer)
-                return "game"
-        elif move == "stay":
-            dealer.cards[1].face_down = False
-            print_hands(player, dealer)
-            while True:
-                if player.is_winner(dealer) == None:
-                    dealer.hit(deck.deal)
-            return "game"
-"""
-
-
-play(initialize())
+print("Thanks for playing\n")
