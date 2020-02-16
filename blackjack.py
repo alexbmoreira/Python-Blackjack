@@ -2,8 +2,10 @@ from card import *
 from hand import *
 from deck import *
 
+LINES = 31
+
 def print_hands(player, dealer):
-    print("-------------------------")
+    print("-" * LINES)
     print("Your cards:")
     print(f"{player}")
     print(f"Value: {player.value}\n")
@@ -14,7 +16,7 @@ def print_hands(player, dealer):
         print(f"Value: {dealer.value - dealer.cards[1].value}")
     else:
         print(f"Value: {dealer.value}")
-    print("-------------------------")
+    print("-" * LINES)
 
 def get_input():
     while True:
@@ -23,7 +25,7 @@ def get_input():
         if move == "hit" or move == "stay" or move == "q":
             print()
             return move
-        
+
         print("Not a valid choice")
 
 def play_again():
@@ -37,6 +39,7 @@ def play_again():
         print("Not a valid choice")
 
 def initialize():
+    print("\n" * 5 + "=" * LINES)
     print("Welcome to blackjack in python!\n")
 
     suits = ["Spades", "Hearts", "Clubs", "Diamonds"]
@@ -82,7 +85,7 @@ def make_move(deck, player, dealer):
                 dealer.hit(deck.deal())
             
             if player.is_winner(dealer):
-                print("Dealer busts! You Win!")
+                print("You Win!")
             else:
                 print("Dealer wins!")
             return
