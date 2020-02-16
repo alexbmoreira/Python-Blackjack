@@ -24,10 +24,7 @@ class Deck():
         random.shuffle(self.cards)
 
     def deal(self):
-        card_index = random.randint(0, len(self.cards) - 1)
-        card = self.cards.pop(card_index)
-
-        return card
+        return self.cards.pop(-1)
 
 
 if __name__ == "__main__":

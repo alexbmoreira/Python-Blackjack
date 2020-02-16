@@ -22,7 +22,7 @@ class Hand():
             else:
                 string += "*Face down*" + "\n"
 
-        return string
+        return string[:-1]
 
     def __len__(self):
         return len(self.cards)
@@ -48,11 +48,11 @@ class Hand():
     def is_winner(self, dealer):
         if dealer.check_bust():
             return True
-        if self.check_bust():
-            return False
         
         if 21 - dealer.value < 21 - self.value:
             return False
+        
+        return True
 
 if __name__ == "__main__":
     import random

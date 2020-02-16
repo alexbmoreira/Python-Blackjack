@@ -2,6 +2,30 @@ from card import *
 from hand import *
 from deck import *
 
+def print_hands(player, dealer):
+    print("-------------------------")
+    print("Your cards:")
+    print(f"{player}")
+    print(f"Value: {player.value}\n")
+
+    print("Dealer cards:")
+    print(f"{dealer}")
+    if dealer.cards[1].face_down:
+        print(f"Value: {dealer.value - dealer.cards[1].value}")
+    else:
+        print(f"Value: {dealer.value}")
+    print("-------------------------")
+
+def get_input():
+    while True:
+        move = input("Hit or stay (q to exit): ").lower()
+
+        if move == "hit" or move == "stay" or move == "q":
+            print()
+            return move
+        
+        print("Not a valid choice")
+
 def initialize():
     print("Welcome to blackjack in python!\n")
 
@@ -20,17 +44,38 @@ def initialize():
     player = Hand()
     dealer = Hand()
 
+    deck.shuffle()
+
     return deck, player, dealer
 
-def print_hands(player, dealer):
-    print("Your cards:")
-    print(f"{player}Value: {player.value}\n")
+def make_move(deck, player, dealer):
+    while True:
+        print_hands(player, dealer)
+        move = get_input()
 
-    print("Dealer cards")
-    if dealer.cards[1].face_down:
-        print(f"{dealer}Value: {dealer.value - dealer.cards[1].value}\n")
-    else:
-        print(f"{dealer}Value: {dealer.value}\n")
+        if move == "q":
+            print("Goodbye")
+            return "quit"
+
+        if move == "hit":
+            card = deck.deal()
+            player.hit(card)
+            print(f"Hit: {card}")
+            if player.check_bust():
+                print("Bust! You lost!")
+                return
+            continue
+        
+        if move == "stay":
+            dealer.cards[1].face_down = False
+            while dealer.value < 17:
+                dealer.hit(deck.deal())
+            
+            if player.is_winner(dealer):
+                print("Dealer busts! You Win!")
+            else:
+                print("Dealer wins!")
+            return
 
 def play(setup):
     deck = setup[0]
@@ -43,17 +88,32 @@ def play(setup):
     dealer.hit(deck.deal(), temp_card)
     player.hit(deck.deal(), deck.deal())
 
+    if make_move(deck, player, dealer) != "quit":
+        print_hands(player, dealer)
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+"""
     while True:
         print_hands(player, dealer)
 
-        while True:
-            move = input("Hit or stay (q to exit): ").lower()
-
-            if move == "hit" or move == "stay" or move == "q":
-                break
-            else:
-                print("Not a valid choice")
-
+        move = get_input()
 
         if move == "q":
             return "quit"
@@ -70,9 +130,12 @@ def play(setup):
                 return "game"
         elif move == "stay":
             dealer.cards[1].face_down = False
-            
+            print_hands(player, dealer)
+            while True:
+                if player.is_winner(dealer) == None:
+                    dealer.hit(deck.deal)
             return "game"
-
+"""
 
 
 play(initialize())
