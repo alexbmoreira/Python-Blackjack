@@ -1,12 +1,19 @@
-from card import *
-from hand import *
-from deck import *
-from chip import *
+import card
+import hand
+import deck
+import chip
 
 LINES = 31
+SUITS = ["Spades", "Hearts", "Clubs", "Diamonds"]
+RANKS = ["Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", \
+         "Ten", "Jack", "Queen", "King", "Ace"]
+VALUES = {"Two":2, "Three":3, "Four":4, "Five":5, "Six":6, "Seven":7, "Eight":8, "Nine":9, \
+          "Ten":10, "Jack":10, "Queen":10, "King":10, "Ace":11}
+chips = chip.Chip()
 
-def print_hands(player, dealer):
+def print_hands(player, dealer, chips):    
     print("-" * LINES)
+    print(f"Your bet: ${chips.bet}")
     print("Your cards:")
     print(f"{player}")
     print(f"Value: {player.value}\n")
@@ -19,11 +26,23 @@ def print_hands(player, dealer):
         print(f"Value: {dealer.value}")
     print("-" * LINES)
 
+def place_bet(chips):
+    while True:
+        try:
+            chips.bet = int(input("Place a bet of $10 or more: $"))
+        except ValueError:
+            print("Please bet a numerical value!")
+        else:
+            if chips.bet < 10:
+                continue
+            else:
+                break
+
 def get_input():
     while True:
         move = input("'hit' or 'stay'? (q to exit): ").lower()
 
-        if move == "hit" or move == "stay" or move == "q":
+        if move in ("hit", "stay", "q"):
             print()
             return move
 
@@ -33,38 +52,36 @@ def play_again():
     while True:
         choice = input("Play again? ('yes' or 'no'): ").lower()
 
-        if choice == "yes" or choice == "no":
+        if choice in ("yes", "no"):
             print()
             return choice
-        
+
         print("Not a valid choice")
 
-def initialize():
+def initialize(chips):
     print("\n" * 5 + "=" * LINES)
     print("Welcome to blackjack in python!\n")
+    print(f"Players chip count is: ${chips.total}")
 
-    suits = ["Spades", "Hearts", "Clubs", "Diamonds"]
-    ranks = ["Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", \
-            "Jack", "Queen", "King", "Ace"]
-    values = {"Two":2, "Three":3, "Four":4, "Five":5, "Six":6, "Seven":7, "Eight":8, "Nine":9, "Ten":10, \
-            "Jack":10, "Queen":10, "King":10, "Ace":11}
     cards = []
 
-    for i in range(0, len(suits)):
-        for j in range(0, len(ranks)):
-            cards.append(Card(suits[i], ranks[j], values.get(ranks[j])))
+    for suit in SUITS:
+        for rank in RANKS:
+            cards.append(card.Card(suit, rank, VALUES.get(rank)))
 
-    deck = Deck(cards)
-    player = Hand()
-    dealer = Hand()
+    card_deck = deck.Deck(cards)
+    player = hand.Hand()
+    dealer = hand.Hand()
 
-    deck.shuffle()
+    card_deck.shuffle()
 
-    return deck, player, dealer
+    place_bet(chips)
 
-def make_move(deck, player, dealer):
+    return card_deck, player, dealer, chips
+
+def make_move(card_deck, player, dealer, chips):   
     while True:
-        print_hands(player, dealer)
+        print_hands(player, dealer, chips)
         move = get_input()
 
         if move == "q":
@@ -72,47 +89,51 @@ def make_move(deck, player, dealer):
             return "quit"
 
         if move == "hit":
-            card = deck.deal()
-            player.hit(card)
-            print(f"Hit: {card}")
+            dealt_card = card_deck.deal()
+            player.hit(dealt_card)
+            print(f"Hit: {dealt_card}")
             if player.check_bust():
-                print("Bust! You lost!")
-                return
+                print(f"Bust! You lost ${chips.bet}!")
+                chips.lose()
+                return "game"
             continue
-        
+
         if move == "stay":
             dealer.cards[1].face_down = False
             while dealer.value < 17:
-                dealer.hit(deck.deal())
-            
+                dealer.hit(card_deck.deal())
+
             if player.is_winner(dealer):
-                print("You Win!")
+                print(f"You Win ${chips.bet}!")
+                chips.win()
             else:
-                print("Dealer wins!")
-            return
+                print(f"Dealer wins! You lost ${chips.bet}")
+                chips.lose()
+            return "game"
 
 def play(setup):
-    deck = setup[0]
+    card_deck = setup[0]
     player = setup[1]
     dealer = setup[2]
+    chips = setup[3]
 
     print("Dealing cards...")
-    temp_card = deck.deal()
+    temp_card = card_deck.deal()
     temp_card.face_down = True
-    dealer.hit(deck.deal(), temp_card)
-    player.hit(deck.deal(), deck.deal())
+    dealer.hit(card_deck.deal(), temp_card)
+    player.hit(card_deck.deal(), card_deck.deal())
 
-    outcome = make_move(deck, player, dealer)
+    outcome = make_move(card_deck, player, dealer, chips)
 
     if outcome != "quit":
-        print_hands(player, dealer)
+        print_hands(player, dealer, chips)
         return play_again()
 
     return outcome
 
 
-
-while play(initialize()) == "yes":
+chips = chip.Chip()
+while play(initialize(chips)) == "yes":
     pass
 
-print("Thanks for playing\n")
+print(f"Thanks for playing. You took home ${chips.total}\n")
