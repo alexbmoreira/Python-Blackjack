@@ -30,7 +30,7 @@ class Deck():
 if __name__ == "__main__":
     
     import random
-    from card import *
+    from card import Card
 
     suits = ["Spades", "Hearts", "Clubs", "Diamonds"]
     ranks = ["Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", \

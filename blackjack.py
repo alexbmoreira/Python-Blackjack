@@ -1,7 +1,7 @@
-import card
-import hand
-import deck
-import chip
+from card import Card
+from hand import Hand
+from deck import Deck
+from chip import Chip
 
 LINES = 31
 SUITS = ["Spades", "Hearts", "Clubs", "Diamonds"]
@@ -9,9 +9,8 @@ RANKS = ["Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", \
          "Ten", "Jack", "Queen", "King", "Ace"]
 VALUES = {"Two":2, "Three":3, "Four":4, "Five":5, "Six":6, "Seven":7, "Eight":8, "Nine":9, \
           "Ten":10, "Jack":10, "Queen":10, "King":10, "Ace":11}
-chips = chip.Chip()
 
-def print_hands(player, dealer, chips):    
+def print_hands(player, dealer, chips):
     print("-" * LINES)
     print(f"Your bet: ${chips.bet}")
     print("Your cards:")
@@ -36,8 +35,7 @@ def place_bet(chips):
             if chips.bet > chips.total:
                 print("You don't have enough money!")
                 continue
-            else:
-                break
+            break
 
 def get_input():
     while True:
@@ -68,11 +66,11 @@ def initialize(chips):
 
     for suit in SUITS:
         for rank in RANKS:
-            cards.append(card.Card(suit, rank, VALUES.get(rank)))
+            cards.append(Card(suit, rank, VALUES.get(rank)))
 
-    card_deck = deck.Deck(cards)
-    player = hand.Hand()
-    dealer = hand.Hand()
+    card_deck = Deck(cards)
+    player = Hand()
+    dealer = Hand()
 
     card_deck.shuffle()
 
@@ -80,7 +78,7 @@ def initialize(chips):
 
     return card_deck, player, dealer, chips
 
-def make_move(card_deck, player, dealer, chips):   
+def make_move(card_deck, player, dealer, chips):
     while True:
         print_hands(player, dealer, chips)
         move = get_input()
@@ -139,12 +137,14 @@ def play(setup):
         print_hands(player, dealer, chips)
         if outcome != "over":
             return play_again()
-    
+
     return outcome
 
+def main():
+    chips = Chip()
+    while play(initialize(chips)) == "yes":
+        pass
 
-chips = chip.Chip()
-while play(initialize(chips)) == "yes":
-    pass
+    print(f"Thanks for playing. You took home ${chips.total}\n")
 
-print(f"Thanks for playing. You took home ${chips.total}\n")
+main()

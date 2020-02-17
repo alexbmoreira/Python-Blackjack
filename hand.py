@@ -56,8 +56,8 @@ class Hand():
 
 if __name__ == "__main__":
     import random
-    from deck import *
-    from card import *
+    from deck import Deck
+    from card import Card
 
     hand_a = Hand()
     card_a1 = Card("Hearts", "Ace", 11)
