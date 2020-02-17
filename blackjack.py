@@ -4,6 +4,7 @@ from BlackjackPackage.deck import Deck
 from BlackjackPackage.chip import Chip
 
 LINES = 31
+
 SUITS = ["Spades", "Hearts", "Clubs", "Diamonds"]
 RANKS = ["Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", \
          "Ten", "Jack", "Queen", "King", "Ace"]
