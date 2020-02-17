@@ -4,6 +4,10 @@ Blackjack Game in Python
 This is a simple game of blackjack made to practice my Python skills.
 It is played with a player and an AI dealer.
 
+How to run
+----------
+`python blackjack.py` and play from the terminal
+
 How to play
 -----------
 1. Player starts with $500 and places a bet.
