@@ -17,10 +17,7 @@ class Hand():
             return string
 
         for card in self.cards:
-            if not card.face_down:
-                string += str(card) + "\n"
-            else:
-                string += "*Face down*" + "\n"
+            string += str(card) + "\n"
 
         return string[:-1]
 
