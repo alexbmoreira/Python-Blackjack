@@ -9,3 +9,6 @@ class Chip():
 
     def lose(self):
         self.total -= self.bet
+
+        if self.total < 0:
+            self.total = 0

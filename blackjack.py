@@ -29,11 +29,12 @@ def print_hands(player, dealer, chips):
 def place_bet(chips):
     while True:
         try:
-            chips.bet = int(input("Place a bet of $10 or more: $"))
+            chips.bet = int(input("Place a bet: $"))
         except ValueError:
             print("Please bet a numerical value!")
         else:
-            if chips.bet < 10:
+            if chips.bet > chips.total:
+                print("You don't have enough money!")
                 continue
             else:
                 break
@@ -95,6 +96,9 @@ def make_move(card_deck, player, dealer, chips):
             if player.check_bust():
                 print(f"Bust! You lost ${chips.bet}!")
                 chips.lose()
+                if chips.total < 1:
+                    print("You've lost all your money!")
+                    return "over"
                 return "game"
             continue
 
@@ -109,6 +113,9 @@ def make_move(card_deck, player, dealer, chips):
             else:
                 print(f"Dealer wins! You lost ${chips.bet}")
                 chips.lose()
+                if chips.total < 1:
+                    print("You've lost all your money!")
+                    return "over"
             return "game"
 
 def play(setup):
@@ -127,8 +134,9 @@ def play(setup):
 
     if outcome != "quit":
         print_hands(player, dealer, chips)
-        return play_again()
-
+        if outcome != "over":
+            return play_again()
+    
     return outcome
 
 
