@@ -111,11 +111,12 @@ def make_move(card_deck, player, dealer, chips):
                 print(f"You Win ${chips.bet}!")
                 chips.win()
             else:
-                print(f"Dealer wins! You lost ${chips.bet}")
-                chips.lose()
-                if chips.total < 1:
-                    print("You've lost all your money!")
-                    return "over"
+                if dealer.value != player.value:
+                    print(f"Dealer wins! You lost ${chips.bet}")
+                    chips.lose()
+                    if chips.total < 1:
+                        print("You've lost all your money!")
+                        return "over"
             return "game"
 
 def play(setup):

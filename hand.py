@@ -33,11 +33,13 @@ class Hand():
             self.value += card.value
 
             if(card.rank == "Ace"):
-                if self.value > 21:
-                    self.value -= 10
-                    card.value = 1
-
                 self.aces += 1
+
+            if self.value > 21 and self.aces > 0:
+                self.value -= 10
+                for ace in self:
+                    if ace.rank == "Ace" and ace.value == 11:
+                        ace.value = 1
 
     def check_bust(self):
         if self.value > 21:
