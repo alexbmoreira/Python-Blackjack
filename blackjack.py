@@ -1,7 +1,7 @@
-from card import Card
-from hand import Hand
-from deck import Deck
-from chip import Chip
+from BlackjackPackage.card import Card
+from BlackjackPackage.hand import Hand
+from BlackjackPackage.deck import Deck
+from BlackjackPackage.chip import Chip
 
 LINES = 31
 SUITS = ["Spades", "Hearts", "Clubs", "Diamonds"]
