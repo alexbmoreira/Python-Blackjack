@@ -6,7 +6,7 @@ It is played with a player and an AI dealer.
 
 How to run
 ----------
-`python blackjack.py` and play from the terminal
+`>>> python blackjack.py` and play from the terminal
 
 How to play
 -----------
