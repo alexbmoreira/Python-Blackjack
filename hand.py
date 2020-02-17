@@ -31,15 +31,16 @@ class Hand():
         for card in args:
             self.cards.append(card)
             self.value += card.value
-
             if(card.rank == "Ace"):
                 self.aces += 1
 
             if self.value > 21 and self.aces > 0:
-                self.value -= 10
-                for ace in self:
+                for ace in self.cards:
                     if ace.rank == "Ace" and ace.value == 11:
+                        self.value -= 10
                         ace.value = 1
+                        self.aces -= 1
+                        break
 
     def check_bust(self):
         if self.value > 21:
@@ -62,21 +63,16 @@ if __name__ == "__main__":
     from card import *
 
     hand_a = Hand()
-    card_a = Card("Hearts", "King", 10)
+    card_a1 = Card("Hearts", "Ace", 11)
+    card_a2 = Card("Spades", "Ace", 11)
+    card_a3 = Card("Hearts", "King", 10)
 
-    hand_a.hit(card_a, Card("Hearts", "Jack", 10), Card("Clubs", "Ace", 11))
-    print(f"{hand_a} - {hand_a.value}")
-    print(hand_a.check_bust())
+    hand_a.hit(card_a1, card_a2)
 
-    print()
-    
-    hand_b = Hand()
-    card_b1 = Card("Spades", "Queen", 10)
-    card_b2 = Card("Clubs", "King", 10)
-    card_b3 = Card("Diamonds", "Six", 6)
+    print(f"{hand_a}")
+    print(f"Value: {hand_a.value}\n")
 
-    hand_b.hit(card_b1, card_b2, card_b3)
-    print(f"{hand_b} - {hand_b.value}")
-    print(hand_b.check_bust())
+    hand_a.hit(card_a3)
 
-    print(hand_a.is_winner(hand_b))         # Should be True
+    print(f"{hand_a}")
+    print(f"Value: {hand_a.value}\n")
